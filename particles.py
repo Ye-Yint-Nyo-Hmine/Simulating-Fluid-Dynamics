@@ -7,16 +7,32 @@ class Particle():
         self._color = color
         self._position = [center_x, center_y]
         self._radius = radius
-        self.gravity = 9.81/20
-        self._velocity = [0, 0] # magnitude of velocity
+        self.gravity = 9.81
+        self._mass = 2
+        self._force = [0, 0] # magnitude of force with respect to x, y
+        self.collided = False
 
     def draw(self):
         pygame.draw.circle(self._surface, self._color, self._position, self._radius)
 
     def update(self):
-        self._velocity[1] += self.gravity # apply gravity to the velocity of the particle
-        self._position[0] += self._velocity[0] # enforce velocity on x
-        self._position[1] += self._velocity[1] # enforce velocity on y
+        print(self._force[0], self._force[1])
+        self._force[0], self._force[1] = self._mass * 0, self._mass * self.gravity
+        # TODO: Fix collision and bouncing
+        if self.collided:
+            self._force[1] *= -1
+            self.collided = False
+
+        self._position[0] += self._force[0]
+        self._position[1] += self._force[1]
+
+        if self._position[0] - self._radius > 0 and self._position[0] + self._radius < self._surface.get_width():
+            if self._position[1] - self._radius > 0 and self._position[1] + self._radius < self._surface.get_height():
+                pass
+            else:
+                self.collided = True
+
+
 
     @property
     def position(self):
@@ -35,9 +51,9 @@ class Particle():
         self._color = new_color
 
     @property
-    def velocity(self):
-        return self._velocity
+    def force(self):
+        return  self._force
 
-    @velocity.setter
-    def velocity(self, new_vel: list):
-        self._velocity = new_vel
+    @force.setter
+    def force(self, new_force):
+        self._force = new_force
