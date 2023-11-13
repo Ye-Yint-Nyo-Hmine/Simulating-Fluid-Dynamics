@@ -15,7 +15,7 @@ WIN = pygame.display.set_mode((WIDHT, HEIGHT))
 
 
 # initialize class dependencies
-particle = Particle(WIN, (100, 200, 255), WIN_CENTER[0], WIN_CENTER[1], 20)
+particle = Particle(WIN, (100, 200, 255), [WIN_CENTER[0], WIN_CENTER[1]], 20)
 
 
 def gameUpdate(surface):
