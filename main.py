@@ -2,6 +2,7 @@
 import pygame
 import sys
 from particles import Particle
+from non_gravity_objects import Platform
 
 
 # initialize pygame
@@ -9,14 +10,19 @@ pygame.init()
 
 # set screen factor and initialize screen with set width, height
 SCREEN_SIZE_FACTOR = 80
-WIDHT, HEIGHT = 16*SCREEN_SIZE_FACTOR, 9*SCREEN_SIZE_FACTOR
-WIN_CENTER = (WIDHT/2, HEIGHT/2)
-WIN = pygame.display.set_mode((WIDHT, HEIGHT))
+WIDTH, HEIGHT = 16*SCREEN_SIZE_FACTOR, 9*SCREEN_SIZE_FACTOR
+WIN_CENTER = (WIDTH/2, HEIGHT/2)
+WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 
 
 # initialize class dependencies
 particles = pygame.sprite.Group()
-particles.add(Particle(WIN, (100, 200, 255), [WIN_CENTER[0], WIN_CENTER[1]], 20))
+particles.add(Particle(WIN_CENTER, 20))
+
+non_gravity_objects = pygame.sprite.Group()
+non_gravity_objects.add(Platform([100, HEIGHT-40], [WIDTH-200, 10]))
+
+
 
 
 def gameUpdate(surface):
@@ -25,7 +31,14 @@ def gameUpdate(surface):
     """
     surface.fill("black")
     particles.update()
+    
+    #* Checking for collisions
+    #? Maybe move to another script
+    # TODO: add the collision detection
+
+
     particles.draw(WIN)
+    non_gravity_objects.draw(WIN)
 
     pygame.display.update()
 
