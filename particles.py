@@ -8,10 +8,10 @@ class Particle(pygame.sprite.Sprite):
 
         
         self._radius = radius
-        self._mass = mass
+        self.mass = mass
         self._color = color
 
-        self._velocity = velocity
+        self.velocity = velocity
         self.collided = False #? Do we need it?
 
         self.image = pygame.Surface([radius*2, radius*2])
@@ -21,10 +21,10 @@ class Particle(pygame.sprite.Sprite):
 
     def update(self):
 
-        self._velocity[1] += GRAVITY//4
+        self.velocity[1] += GRAVITY//8
 
-        self.rect.x += self._velocity[0]
-        self.rect.y += self._velocity[1]
+        self.rect.x += self.velocity[0]
+        self.rect.y += self.velocity[1]
 
 
 

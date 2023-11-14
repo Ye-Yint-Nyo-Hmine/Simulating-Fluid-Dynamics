@@ -17,10 +17,10 @@ WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 
 # initialize class dependencies
 particles = pygame.sprite.Group()
-particles.add(Particle(WIN_CENTER, 20))
+particles.add(Particle((WIN_CENTER[0], 0), 20, 2, [0, 0]))
 
 non_gravity_objects = pygame.sprite.Group()
-non_gravity_objects.add(Platform([100, HEIGHT-40], [WIDTH-200, 10]))
+non_gravity_objects.add(Platform([100, WIN_CENTER[1]+100], [WIDTH-200, 10], 30))
 
 
 
@@ -31,12 +31,26 @@ def gameUpdate(surface):
     """
     surface.fill("black")
     particles.update()
+    non_gravity_objects.update()
     
     #* Checking for collisions
     #? Maybe move to another script
-    # TODO: add the collision detection
+    
+    #* Collision detection between particles and non_gravity_objects
+    collisions = pygame.sprite.groupcollide(particles, non_gravity_objects, False, False)
+    for particle in collisions.keys():
+        v1, v2 = particle.velocity[1], collisions[particle][0].velocity[1]
+        m1, m2 = particle.mass, collisions[particle][0].mass
+        particle.velocity[1] = (v1*(m1 - m2) + 2*m2*v2) / (m1 + m2)
+        collisions[particle][0].velocity[1] = (v2*(m2-m1) + 2*m1*v1) / (m1+m2)
+    
+    #* updates once more before draws on screen (helps buggy display)
+        #? Have another solution in mind
+    particles.update()
+    non_gravity_objects.update()
 
 
+    #* Finally drawing objects onto screen
     particles.draw(WIN)
     non_gravity_objects.draw(WIN)
 
