@@ -1,42 +1,41 @@
 import pygame
 
+GRAVITY = 9.81
 
-class Particle():
-    def __init__(self, surface, color, position, radius): #? If you dont mind, I thing it is unnecessary to have to arguments for position.
+class Particle(pygame.sprite.Sprite):
+    def __init__(self, surface, color, position, radius):
+        super().__init__()
+
         self._surface = surface
         self._color = color
-        self._position = position
         self._radius = radius
-        self.gravity = 9.81
         self._mass = 2
         self._velocity = [0, 0] # magnitude of force with respect to x, y
-        #? I thing velocity is a better name (instead of force), since acceleration is based on force and mass (a=F*m) and velocity is based on the acceleration (v=a*t).
-        #?                          We calculate for every second thus instead of a*t we just add acceleration to velocity (v += a). (You are already doing this on line 23)
-        #? Perhaps simple explanation is that s=v*t, for us s+=v -> and you are doing that on line 31-32.
         self.collided = False
 
-    def draw(self):
-        pygame.draw.circle(self._surface, self._color, self._position, self._radius)
+        self.image = pygame.Surface([radius*2, radius*2])
+        pygame.draw.circle(self.image, self._color, (radius, radius), self._radius)
+        self.rect = self.image.get_rect()
+        self.rect.x, self.rect.y = position
 
     def update(self):
         #print(self._force[0], self._force[1])
-        self._velocity = [(self._mass * 0), (self._mass * self.gravity)] #? I change the syntax of this line a little bit so it would be easier to read hope you dont mind.
+        self._velocity = [(self._mass * 0), (self._mass * GRAVITY)] #? I change the syntax of this line a little bit so it would be easier to read hope you dont mind.
         # TODO: Fix collision and bouncing
-        #? The bouncing probably happens because the particle does not escape the bottom before next collision check.
         if self.collided:
             print("colided")
             self._velocity[1] *= -1
             self.collided = False
 
-        self._position[0] += self._velocity[0]
-        self._position[1] += self._velocity[1]
+        self.rect.x += self._velocity[0]
+        self.rect.y += self._velocity[1]
 
         #? Because of the nested conditions, self.collided works only for the top and bottom of the screen
         #? I thing we should change the collision checks, because we need for the particle to be able to push each other
         #? The way I would do it is coding a way for the particle to insert a force on the object it interacts with and give the particle same force in oposite direction
         #?                                                                                                 (And calculate the velocity based on all the forces (including gravity))
-        if self._position[0] - self._radius > 0 and self._position[0] + self._radius < self._surface.get_width():
-            if self._position[1] - self._radius > 0 and self._position[1] + self._radius < self._surface.get_height():
+        if self.rect.x > 0 and self.rect.x + self._radius*2 < self._surface.get_width():
+            if self.rect.y > 0 and self.rect.y + self._radius*2 < self._surface.get_height():
                 pass
             else:
                 self.collided = True

@@ -15,7 +15,8 @@ WIN = pygame.display.set_mode((WIDHT, HEIGHT))
 
 
 # initialize class dependencies
-particle = Particle(WIN, (100, 200, 255), [WIN_CENTER[0], WIN_CENTER[1]], 20)
+particles = pygame.sprite.Group()
+particles.add(Particle(WIN, (100, 200, 255), [WIN_CENTER[0], WIN_CENTER[1]], 20))
 
 
 def gameUpdate(surface):
@@ -23,8 +24,8 @@ def gameUpdate(surface):
     :return: Update the game, and display objects onto screen
     """
     surface.fill("black")
-    particle.draw()
-    particle.update()
+    particles.update()
+    particles.draw(WIN)
 
     pygame.display.update()
 
