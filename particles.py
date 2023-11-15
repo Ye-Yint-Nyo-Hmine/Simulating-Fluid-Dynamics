@@ -8,19 +8,18 @@ class Particle(pygame.sprite.Sprite):
         super().__init__()
 
         
-        self._radius = radius
+        self.radius = radius
         self.mass = mass
         self._color = color
 
         self._velocity = velocity
 
         self.image = pygame.Surface([radius*2, radius*2])
-        pygame.draw.circle(self.image, self._color, (radius, radius), self._radius)
+        pygame.draw.circle(self.image, self._color, (radius, radius), self.radius)
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = position
 
     def update(self):
-
     
         self.velocity[1] += GRAVITY//8
 
