@@ -45,6 +45,9 @@ def gameUpdate(surface):
         m1, m2 = particle.mass, collisions[particle][0].mass
         particle.velocity[1] = (v1*(m1 - m2) + 2*m2*v2) / (m1 + m2)
         collisions[particle][0].velocity[1] = (v2*(m2-m1) + 2*m1*v1) / (m1+m2)
+
+        particles.update()
+        non_gravity_objects.update()
     
     #* updates once more before draws on screen (helps buggy display)
         #? Have another solution in mind:  I think just updating once is better
