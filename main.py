@@ -20,7 +20,7 @@ particles = pygame.sprite.Group()
 particles.add(Particle((WIN_CENTER[0], 0), 20, 2, [0, 0]))
 
 non_gravity_objects = pygame.sprite.Group()
-non_gravity_objects.add(Platform([100, WIN_CENTER[1]+100], [WIDTH-200, 10], 30))
+non_gravity_objects.add(Platform([100, WIN_CENTER[1]+100], [WIDTH-200, 10], 1000)) #increasing mass to 1000 makes platform static
 
 
 
@@ -30,6 +30,16 @@ def gameUpdate(surface):
     :return: Update the game, and display objects onto screen
     """
     surface.fill("black")
+
+    #? This is an attempt to solve the issue with ball falling through the platform (the same problem you had in the first prototype)
+    #* This creates dictionary and stores position of objects before update function
+    positions = {}
+    for particle in particles:
+        positions[particle] = [particle.rect.x, particle.rect.y]
+    for ngo in non_gravity_objects:
+        positions[ngo] = [ngo.rect.x, ngo.rect.y]
+
+
     particles.update()
     non_gravity_objects.update()
     
@@ -38,16 +48,17 @@ def gameUpdate(surface):
     
     #* Collision detection between particles and non_gravity_objects
     collisions = pygame.sprite.groupcollide(particles, non_gravity_objects, False, False)
-
-    #? Is the platform supposed to stay rigid or move with gravity as it is falling down when run
     for particle in collisions.keys():
         v1, v2 = particle.velocity[1], collisions[particle][0].velocity[1]
         m1, m2 = particle.mass, collisions[particle][0].mass
-        particle.velocity[1] = (v1*(m1 - m2) + 2*m2*v2) / (m1 + m2)
-        collisions[particle][0].velocity[1] = (v2*(m2-m1) + 2*m1*v1) / (m1+m2)
+        particle.velocity[1] = ((v1*(m1 - m2) + 2*m2*v2) / (m1 + m2)) * 0.9 #multiplying by 0.9 simulates the loss of kinetic energy in real world
+        collisions[particle][0].velocity[1] = ((v2*(m2-m1) + 2*m1*v1) / (m1+m2)) * 0.9
 
-        particles.update()
-        non_gravity_objects.update()
+        #* This resets position of objects after collision (if you want to know how that works text me)
+        particle.rect.x, particle.rect.y = positions[particle]
+        collisions[particle][0].rect.x, collisions[particle][0].rect.y = positions[collisions[particle][0]]
+        #particles.update() #? These are no longer needed there, however I thing it looks less laggy with them (try it)
+        #non_gravity_objects.update()
     
 
     #* Finally drawing objects onto screen

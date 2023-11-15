@@ -21,7 +21,8 @@ class Particle(pygame.sprite.Sprite):
 
     def update(self):
 
-        self._velocity[1] += GRAVITY//8
+    
+        self.velocity[1] += GRAVITY//8
 
         self.rect.x += self._velocity[0]
         self.rect.y += self._velocity[1]
