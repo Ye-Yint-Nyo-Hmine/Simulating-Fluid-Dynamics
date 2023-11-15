@@ -49,10 +49,6 @@ def gameUpdate(surface):
         particles.update()
         non_gravity_objects.update()
     
-    #* updates once more before draws on screen (helps buggy display)
-        #? Have another solution in mind:  I think just updating once is better
-    #* I think just not updating again is smoother as it refreshes twice, it runs the function twice, making it slower
-
 
     #* Finally drawing objects onto screen
     particles.draw(WIN)

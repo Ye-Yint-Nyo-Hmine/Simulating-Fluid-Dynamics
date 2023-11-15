@@ -17,13 +17,11 @@ class Platform(pygame.sprite.Sprite):
         self.rect.x, self.rect.y = position
 
     def update(self):
-        #print(self.velocity[1])
-        #? We don't need to subtract the velocity x of the platform as it won't be affected by any forces
+        
         self.rect.x += self.velocity[0]
-
-        #? We also don't need to subtract the velocity y as the platform won't use gravity or be affected with any forces
-        #? Should I continue and delete both of these lines?
         self.rect.y += self.velocity[1]
+
+
 
     @property
     def velocity(self):
