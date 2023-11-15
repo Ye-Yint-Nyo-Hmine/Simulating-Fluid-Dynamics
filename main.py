@@ -38,6 +38,8 @@ def gameUpdate(surface):
     
     #* Collision detection between particles and non_gravity_objects
     collisions = pygame.sprite.groupcollide(particles, non_gravity_objects, False, False)
+
+    #? Is the platform supposed to stay rigid or move with gravity as it is falling down when run
     for particle in collisions.keys():
         v1, v2 = particle.velocity[1], collisions[particle][0].velocity[1]
         m1, m2 = particle.mass, collisions[particle][0].mass
@@ -45,9 +47,8 @@ def gameUpdate(surface):
         collisions[particle][0].velocity[1] = (v2*(m2-m1) + 2*m1*v1) / (m1+m2)
     
     #* updates once more before draws on screen (helps buggy display)
-        #? Have another solution in mind
-    particles.update()
-    non_gravity_objects.update()
+        #? Have another solution in mind:  I think just updating once is better
+    #* I think just not updating again is smoother as it refreshes twice, it runs the function twice, making it slower
 
 
     #* Finally drawing objects onto screen
