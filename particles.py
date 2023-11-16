@@ -14,7 +14,7 @@ class Particle(pygame.sprite.Sprite):
 
         self._velocity = velocity
 
-        self.image = pygame.Surface([radius*2, radius*2])
+        self.image = pygame.Surface([radius*2, radius*2],  pygame.SRCALPHA) #* I made it so that the surface is transpratent
         pygame.draw.circle(self.image, self._color, (radius, radius), self.radius)
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = position
