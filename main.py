@@ -16,10 +16,16 @@ WIN_CENTER = (WIDTH/2, HEIGHT/2)
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 
 
+def generate_group_particles(surface, num_x, num_y):
+    for rows in range(num_y):
+        for particles_x in range(num_x):
+            particles.add(Particle((100 + particles_x*30, 0+rows*40), 10, 2, [0, random.randint(-3, 3)]))
+
+
 # initialize class dependencies
 particles = pygame.sprite.Group()
-particles.add(Particle((WIN_CENTER[0], 50), 20, 2, [0, 0]))
-particles.add(Particle((WIN_CENTER[0]-200, 50), 20, 2, [5, 0]))
+particles.add(Particle((WIN_CENTER[0], 50), 10, 2, [0, 0]))
+particles.add(Particle((WIN_CENTER[0]-200, 50), 10, 2, [5, 0]))
 
 non_gravity_objects = pygame.sprite.Group()
 non_gravity_objects.add(Platform([100, WIN_CENTER[1]+100], [WIDTH-200, 10], 10000)) #increasing mass to 1000 makes platform static
@@ -36,6 +42,9 @@ def gameUpdate(surface):
 
     #? This is an attempt to solve the issue with ball falling through the platform (the same problem you had in the first prototype)
     #* This creates dictionary and stores position of objects before update function
+
+    #* We should make this run faster and more efficiently
+    # TODO: Make it compute more efficiently
     positions = {}
     for particle in particles:
         positions[particle] = [particle.rect.x, particle.rect.y]
@@ -48,8 +57,10 @@ def gameUpdate(surface):
     
     #* Checking for collisions
     #? Maybe move to another script
+    #> I agree, i also think it should be move to another script
         #* Collision detection between particles
     #TODO: The particles stack on each other, needs to be fixed
+    collision_damping_constant = 0.7 #* lost of kinetic energy constant
     for p1 in particles:
         for p2 in particles:
             if p1 != p2:
@@ -57,15 +68,15 @@ def gameUpdate(surface):
                     v1, v2 = p1.velocity[0], p2.velocity[0]
                     m1, m2 = p1.mass, p2.mass
 
-                    p1.velocity[0] = ((v1*(m1-m2) + 2*m2*v2) / (m1 + m2)) * 0.9
-                    p2.velocity[0] = ((v2*(m2-m1) + 2*m1*v1) / (m1+m2)) * 0.9
+                    p1.velocity[0] = ((v1*(m1-m2) + 2*m2*v2) / (m1 + m2)) * collision_damping_constant
+                    p2.velocity[0] = ((v2*(m2-m1) + 2*m1*v1) / (m1+m2)) * collision_damping_constant
 
 
                     v1, v2 = p1.velocity[1], p2.velocity[1]
                     m1, m2 = p1.mass, p2.mass
 
-                    p1.velocity[1] = ((v1*(m1-m2) + 2*m2*v2) / (m1 + m2)) * 0.9
-                    p2.velocity[1] = ((v2*(m2-m1) + 2*m1*v1) / (m1+m2)) * 0.9
+                    p1.velocity[1] = ((v1*(m1-m2) + 2*m2*v2) / (m1 + m2)) * collision_damping_constant
+                    p2.velocity[1] = ((v2*(m2-m1) + 2*m1*v1) / (m1+m2)) * collision_damping_constant
 
                     p1.rect.x, p1.rect.y = positions[p1]
                     p2.rect.x, p2.rect.y = positions[p2]
@@ -77,8 +88,8 @@ def gameUpdate(surface):
         v1, v2 = particle.velocity[1], collisions[particle][0].velocity[1]
         m1, m2 = particle.mass, collisions[particle][0].mass
 
-        particle.velocity[1] = ((v1*(m1 - m2) + 2*m2*v2) / (m1 + m2)) * 0.9 #multiplying by 0.9 simulates the loss of kinetic energy in real world
-        collisions[particle][0].velocity[1] = ((v2*(m2-m1) + 2*m1*v1) / (m1+m2)) * 0.9
+        particle.velocity[1] = ((v1*(m1 - m2) + 2*m2*v2) / (m1 + m2)) * collision_damping_constant #multiplying by 0.9 simulates the loss of kinetic energy in real world
+        collisions[particle][0].velocity[1] = ((v2*(m2-m1) + 2*m1*v1) / (m1+m2)) * collision_damping_constant
 
         #* This resets position of objects after collision (if you want to know how that works text me)
         particle.rect.x, particle.rect.y = positions[particle]
@@ -93,6 +104,13 @@ def gameUpdate(surface):
 
     pygame.display.update()
 
+
+def reset(surface):
+    """
+    :return: reset the program by clearing the screen
+    """
+    for particle in particles:
+        particles.remove(particle)
 
 def main():
     """
@@ -110,12 +128,18 @@ def main():
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mousepos = pygame.mouse.get_pos()
-                particles.add(Particle(mousepos, 20, 2, [random.randint(-3, 3), random.randint(-3, 3)]))
+                particles.add(Particle(mousepos, 10, 2, [random.randint(-3, 3), random.randint(-3, 3)]))
+
+        # Get inputs from keyboard
+        keys = pygame.key.get_pressed()
+
+        if keys[pygame.K_r]: # reset and clear the screen when r is pressed
+            reset(WIN)
 
 
+        if not keys[pygame.K_s]: #* freezes frame when key s is being pressed
+            gameUpdate(WIN)
 
-
-        gameUpdate(WIN)
     pygame.quit()
 
 
