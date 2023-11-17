@@ -45,9 +45,6 @@ def gameUpdate(surface):
     # recolor the surface every frame
     surface.fill("black")
 
-    #? This is an attempt to solve the issue with ball falling through the platform (the same problem you had in the first prototype)
-    #* This creates dictionary and stores position of objects before update function
-
     #* We should make this run faster and more efficiently
     # TODO: Make it compute more efficiently
     positions = {}
