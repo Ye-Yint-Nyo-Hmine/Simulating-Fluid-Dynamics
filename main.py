@@ -3,7 +3,7 @@ import pygame
 import sys
 import random
 from particles import Particle
-from non_gravity_objects import Platform
+from objects import Platform
 
 # initialize pygame
 pygame.init()
@@ -70,7 +70,7 @@ def gameUpdate(surface):
         m1, m2 = particle.mass, collisions[particle][0].mass
 
         particle.velocity[1] = ((v1*(m1 - m2) + 2*m2*v2) / (m1 + m2)) * COLLISION_DAMPING_CONSTANT
-        collisions[particle][0].velocity[1] = ((v2*(m2-m1) + 2*m1*v1) / (m1+m2)) * COLLISION_DAMPING_CONSTANT
+        collisions[particle][0].velocity = [collisions[particle][0].velocity[0], ((v2*(m2-m1) + 2*m1*v1) / (m1+m2)) * COLLISION_DAMPING_CONSTANT]
 
         #* This resets position of objects after collision (if you want to know how that works text me)
         particle.rect.x, particle.rect.y = positions[particle]

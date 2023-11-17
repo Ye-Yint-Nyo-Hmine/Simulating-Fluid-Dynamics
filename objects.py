@@ -21,10 +21,10 @@ class Platform(pygame.sprite.Sprite):
         self.invincible = invincible # added because current platforms do not get affected by gravity nor momentum
 
     def update(self):
-        # if invincible, don't apply momentum nor gravity
-        if not self.invincible:
-            self.rect.x += self._velocity[0]
-            self.rect.y += self._velocity[1] + self.gravity
+        self.velocity[1] += self.gravity
+        # if you dont mind, I deleted this, since the condition in setter prevents the velocity from changing
+        self.rect.x += self._velocity[0]
+        self.rect.y += self._velocity[1]
 
 
 
