@@ -3,7 +3,7 @@ import pygame
 #* On these objects, gravity is not applied
 
 class Platform(pygame.sprite.Sprite):
-    def __init__(self, position, size, mass=1000, velocity=[0, 0], color="white"):
+    def __init__(self, position, size, invincible=False, mass=1000, velocity=[0, 0], color="white"):
         super().__init__()
 
         self.size = size
@@ -16,10 +16,15 @@ class Platform(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = position
 
+        self.gravity = 0 # added for a feature for future use case
+
+        self.invincible = invincible # added because current platforms do not get affected by gravity nor momentum
+
     def update(self):
-        
-        self.rect.x += self._velocity[0]
-        self.rect.y += self._velocity[1]
+        # if invincible, don't apply momentum nor gravity
+        if not self.invincible:
+            self.rect.x += self._velocity[0]
+            self.rect.y += self._velocity[1] + self.gravity
 
 
 
@@ -29,4 +34,7 @@ class Platform(pygame.sprite.Sprite):
 
     @velocity.setter
     def velocity(self, new_velocity):
-        self._velocity = new_velocity
+        if not self.invincible:
+            self._velocity = new_velocity
+
+
