@@ -132,6 +132,7 @@ def main():
     # Set standard FPS to 60 for running the program
     FPS = 60
     clock = pygame.time.Clock()
+    highest_fps = 0
 
     generate_group_particles(WIN)
 
@@ -140,6 +141,7 @@ def main():
         for event in pygame.event.get():
             # quit pygame
             if event.type == pygame.QUIT:
+                print(highest_fps)
                 pygame.quit()
                 sys.exit()
             # get mouse inputs
@@ -150,6 +152,10 @@ def main():
 
         # function for all the key presses to clean up the code
         getKeyPresses(WIN)
+
+        fps = clock.get_fps()
+        if fps > highest_fps:
+            highest_fps = fps
 
         # tick at every FPS
         clock.tick(FPS)
