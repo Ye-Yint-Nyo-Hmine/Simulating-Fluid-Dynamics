@@ -52,7 +52,7 @@ pip install pygame
 ## Contributors
 Ye Yint Hmine: <a href="mailto:yeyintnyohmine143@gmail.com" target="_blank"> yeyintnyohmine143@gmail.com</a> 
 <br/>
-Filip: <a href="https://github.com/FilipDv" target="_blank"> Filip's github</a> 
+Filip Dvorak: <a href="https://github.com/FilipDv" target="_blank"> Filip's github</a> 
 
 <!--- add license in the future time --->
 
