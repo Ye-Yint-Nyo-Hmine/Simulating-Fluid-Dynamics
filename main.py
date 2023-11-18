@@ -68,7 +68,7 @@ def reset(surface):
 
 
 
-def generate_group_particles(surface, num_x=37, num_y=10, pos=(100, 50)):
+def generate_group_particles(surface, num_x=10, num_y=10, pos=(WIN_CENTER[0]-150, WIN_CENTER[1]-150)):
     """
     :param surface: Game surface to create particles on
     :param num_x: the number of particles on each row
@@ -78,7 +78,7 @@ def generate_group_particles(surface, num_x=37, num_y=10, pos=(100, 50)):
     #* for each particle in set num x and num y, create particles
     for rows in range(num_y):
         for column in range(num_x):
-            particles.add(Particle((pos[0] + column*30, pos[1]+rows*40), 10, 2, [random.randrange(-10, 10), random.randrange(-10, 10)]))
+            particles.add(Particle((pos[0] + column*30, pos[1]+rows*30), 10, 2, [random.randrange(-10, 10), random.randrange(-10, 10)]))
 
 
 
