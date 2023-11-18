@@ -22,6 +22,7 @@
 - [x] Customizable model
 - [x] Fast and Complex alogrithm
 - [x] Great for research and testing capabilities
+- [x] Open Source 
 
 ## Goals
 - [x] Start creating structure for program
