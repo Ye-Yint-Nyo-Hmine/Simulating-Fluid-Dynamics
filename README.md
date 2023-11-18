@@ -41,8 +41,8 @@
 
 1. First clone this github repositery
 ```bash
-git clone https://github.com/simulating-fluid-dynamics/.git
-cd simulating-fluid-dynamics
+git clone https://github.com/Ye-Yint-Nyo-Hmine/Simulating-Fluid-Dynamics.git
+cd Simulating-Fluid-Dynamics
 ```
 2. Install pygame
 ```bash
