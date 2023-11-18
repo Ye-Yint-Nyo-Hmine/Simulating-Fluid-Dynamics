@@ -69,6 +69,12 @@ def gameUpdate(surface):
         particle.velocity[1] = ((v1*(m1 - m2) + 2*m2*v2) / (m1 + m2)) * COLLISION_DAMPING_CONSTANT
         collisions[particle][0].velocity = [collisions[particle][0].velocity[0], ((v2*(m2-m1) + 2*m1*v1) / (m1+m2)) * COLLISION_DAMPING_CONSTANT]
 
+        v1, v2 = particle.velocity[0], collisions[particle][0].velocity[0]
+        particle.velocity[0] = ((v1*(m1 - m2) + 2*m2*v2) / (m1 + m2)) * COLLISION_DAMPING_CONSTANT
+        collisions[particle][0].velocity = [((v2*(m2-m1) + 2*m1*v1) / (m1+m2)) * COLLISION_DAMPING_CONSTANT, collisions[particle][0].velocity[1]]
+
+
+
         #* This resets position of objects after collision (if you want to know how that works text me)
         particle.rect.x, particle.rect.y = positions[particle]
         collisions[particle][0].rect.x, collisions[particle][0].rect.y = positions[collisions[particle][0]]
