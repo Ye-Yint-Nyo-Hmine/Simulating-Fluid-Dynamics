@@ -13,7 +13,7 @@
 - [Supports](#supports)
 - [Goals](#goals)
 - [Installation](#installation)
-- [Contributing](#contributing)
+- [Contributing](#contributors)
 <!--- - [License](#license) --->
 
 ### Supports
