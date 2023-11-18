@@ -2,9 +2,9 @@
 import pygame
 import sys
 import random
-from particles import Particle
-from objects import Platform
-
+from objects.particles import Particle
+from objects.other_objects import Platform
+from objects.updates import updates
 # initialize pygame
 pygame.init()
 
@@ -17,7 +17,7 @@ WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 # initialize class dependencies
 
 # Created Sprite Group to contain platforms in
-non_gravity_objects = pygame.sprite.Group()
+other_objects = pygame.sprite.Group()
 
 # Created Sprite Group to contain particles in
 particles = pygame.sprite.Group()
@@ -28,60 +28,27 @@ PARTICLE_RADIUS = 10
 
 
 # Create objects on surface with a boundary of width and height
-non_gravity_objects.add(Platform([0, HEIGHT-10], [WIDTH, 10], invincible=True))
-non_gravity_objects.add(Platform([0, 0], [WIDTH, 10], invincible=True))
-non_gravity_objects.add(Platform([0, 0], [10, HEIGHT], invincible=True))
-non_gravity_objects.add(Platform([WIDTH-10, 0], [10, HEIGHT], invincible=True))
-
-particles.add(Particle((WIN_CENTER[0], 50), PARTICLE_RADIUS, PARTICLE_MASS, [0, 0]))
-particles.add(Particle((WIN_CENTER[0]-200, 50), PARTICLE_RADIUS, PARTICLE_MASS, [5, 0]))
+other_objects.add(Platform([0, HEIGHT-10], [WIDTH, 10], invincible=True))
+other_objects.add(Platform([0, 0], [WIDTH, 10], invincible=True))
+other_objects.add(Platform([0, 0], [10, HEIGHT], invincible=True))
+other_objects.add(Platform([WIDTH-10, 0], [10, HEIGHT], invincible=True))
 
 
 
 def gameUpdate(surface):
+    global particles
+    global other_objects
     """
     :return: Update the game, and display objects onto screen
     """
     # recolor the surface every frame
     surface.fill("black")
 
-    #* We should make this run faster and more efficiently
-    # TODO: Make it compute more efficiently
-    positions = {}
-    for particle in particles:
-        positions[particle] = [particle.rect.x, particle.rect.y]
-    for ngo in non_gravity_objects:
-        positions[ngo] = [ngo.rect.x, ngo.rect.y]
-
-    # Update all the sprites
-    particles.update()
-    non_gravity_objects.update()
-
-    # constant variable for Collision Damping
-    COLLISION_DAMPING_CONSTANT = 0.5
-
-    #* Collision detection between particles and non_gravity_objects
-    collisions = pygame.sprite.groupcollide(particles, non_gravity_objects, False, False)
-    for particle in collisions.keys():
-        v1, v2 = particle.velocity[1], collisions[particle][0].velocity[1]
-        m1, m2 = particle.mass, collisions[particle][0].mass
-
-        particle.velocity[1] = ((v1*(m1 - m2) + 2*m2*v2) / (m1 + m2)) * COLLISION_DAMPING_CONSTANT
-        collisions[particle][0].velocity = [collisions[particle][0].velocity[0], ((v2*(m2-m1) + 2*m1*v1) / (m1+m2)) * COLLISION_DAMPING_CONSTANT]
-
-        v1, v2 = particle.velocity[0], collisions[particle][0].velocity[0]
-        particle.velocity[0] = ((v1*(m1 - m2) + 2*m2*v2) / (m1 + m2)) * COLLISION_DAMPING_CONSTANT
-        collisions[particle][0].velocity = [((v2*(m2-m1) + 2*m1*v1) / (m1+m2)) * COLLISION_DAMPING_CONSTANT, collisions[particle][0].velocity[1]]
-
-
-
-        #* This resets position of objects after collision (if you want to know how that works text me)
-        particle.rect.x, particle.rect.y = positions[particle]
-        collisions[particle][0].rect.x, collisions[particle][0].rect.y = positions[collisions[particle][0]]
+    particles, other_objects, = updates(particles, other_objects)
 
     #* Finally drawing objects onto screen
     particles.draw(WIN)
-    non_gravity_objects.draw(WIN)
+    other_objects.draw(WIN)
 
     # Update pygame display
     pygame.display.update()
