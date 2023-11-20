@@ -25,7 +25,7 @@ class Particle(pygame.sprite.Sprite):
         # p3 = (255, 0, 0) -2
         # 3 parts to it
         average_vel = (abs(self._velocity[0]) + abs(self._velocity[1]))/2
-        max_vel_reached = 20 # max vel reached
+        max_vel_reached = 12 # max vel reached
         if average_vel <= max_vel_reached/3: # p1
             return (0, 255, 255 - int(255*(3/(max_vel_reached))*average_vel))
         elif max_vel_reached/3 < average_vel <= (max_vel_reached/3)*2: # p2
