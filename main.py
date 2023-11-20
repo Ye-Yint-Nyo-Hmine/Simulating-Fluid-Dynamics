@@ -112,6 +112,7 @@ def main():
     FPS = 60
     clock = pygame.time.Clock()
     highest_fps = 0
+    lowest_fps = 60
 
     generate_group_particles(WIN)
 
@@ -120,6 +121,7 @@ def main():
         for event in pygame.event.get():
             # *quit pygame
             if event.type == pygame.QUIT:
+                print(f"Lowest recorded FPS: {lowest_fps}")
                 print(f"Highest recorded FPS: {highest_fps}")
                 print(f"Numbers of particles rendered: {len(particles)}")
                 pygame.quit()
@@ -134,6 +136,9 @@ def main():
         getKeyPresses(WIN)
 
         fps = clock.get_fps()
+
+        if 0 < fps < lowest_fps:
+            lowest_fps = fps
         if fps > highest_fps:
             highest_fps = fps
 
