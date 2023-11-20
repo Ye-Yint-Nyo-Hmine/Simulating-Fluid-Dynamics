@@ -91,7 +91,7 @@ def getKeyPresses(surface):
         reset(surface)
 
     if keys[pygame.K_n]:
-        print(len(particles)) #* displays number of particles on screen
+        print(f"Live particle count: {len(particles)}") #* displays number of particles on console
 
     if keys[pygame.K_g]:
         generate_group_particles(surface) #* generates particles
@@ -120,7 +120,8 @@ def main():
         for event in pygame.event.get():
             # *quit pygame
             if event.type == pygame.QUIT:
-                print(highest_fps)
+                print(f"Highest recorded FPS: {highest_fps}")
+                print(f"Numbers of particles rendered: {len(particles)}")
                 pygame.quit()
                 sys.exit()
             # *get mouse inputs
