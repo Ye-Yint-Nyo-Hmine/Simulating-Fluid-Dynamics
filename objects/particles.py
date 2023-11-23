@@ -4,7 +4,7 @@ GRAVITY = 0 # Temporarily changed gravity to zero for doing density stuff
 
 class Particle(pygame.sprite.Sprite):
     def __init__(self, position, radius, mass=1
-                 , velocity=[0, 0], color="blue"):
+                 , velocity=[0, 0], color="white"):
         super().__init__()
 
         
@@ -17,6 +17,7 @@ class Particle(pygame.sprite.Sprite):
         self.image = pygame.Surface([radius*2, radius*2],  pygame.SRCALPHA) #* I made it so that the surface is transpratent
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = position
+        pygame.draw.circle(self.image, self._color, (self.radius, self.radius), self.radius)
 
     def colorCoding(self):
         # start = (0, 255, 255) rgb gradient
@@ -42,8 +43,8 @@ class Particle(pygame.sprite.Sprite):
 
         self.rect.x += self._velocity[0]
         self.rect.y += self._velocity[1]
-        self._color = self.colorCoding()
-        pygame.draw.circle(self.image, self._color, (self.radius, self.radius), self.radius)
+        #self._color = self.colorCoding()
+
 
     @property
     def color(self):
