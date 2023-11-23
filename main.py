@@ -4,7 +4,7 @@ import sys
 import random
 from objects.particles import Particle
 from objects.other_objects import Platform
-from objects.updates import updates
+from objects.collision import collision
 # initialize pygame
 pygame.init()
 
@@ -47,7 +47,7 @@ def gameUpdate(surface):
     surface.fill("black")
 
     #* Updates the objects
-    particles, other_objects, = updates(particles, other_objects)
+    particles, other_objects, = collision(particles, other_objects)
 
     #* Finally drawing objects onto screen
     particles.draw(WIN)
@@ -68,7 +68,7 @@ def reset(surface):
 
 
 
-def generate_group_particles(surface, num_x=10, num_y=10, pos=(WIN_CENTER[0]-150, WIN_CENTER[1]-150)):
+def generate_group_particles(surface, num_x=10, num_y=10, vel=['random'], pos=(WIN_CENTER[0]-150, WIN_CENTER[1]-150)):
     """
     :param surface: Game surface to create particles on
     :param num_x: the number of particles on each row
@@ -76,11 +76,14 @@ def generate_group_particles(surface, num_x=10, num_y=10, pos=(WIN_CENTER[0]-150
     :return:
     """
     #* for each particle in set num x and num y, create particles
-    for rows in range(num_y):
-        for column in range(num_x):
-            particles.add(Particle((pos[0] + column*30, pos[1]+rows*30), 10, 2, [random.randrange(-10, 10), random.randrange(-10, 10)]))
-
-
+    if vel[0] == "random":
+        for rows in range(num_y):
+            for column in range(num_x):
+                particles.add(Particle((pos[0] + column*30, pos[1]+rows*30), PARTICLE_RADIUS, PARTICLE_MASS, [random.randrange(-10, 10), random.randrange(-10, 10)]))
+    else:
+        for rows in range(num_y):
+            for column in range(num_x):
+                particles.add(Particle((pos[0] + column * 30, pos[1] + rows * 30), PARTICLE_RADIUS, PARTICLE_MASS, vel))
 
 
 def getKeyPresses(surface):
@@ -129,7 +132,8 @@ def main():
             # *get mouse inputs
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
-                particles.add(Particle(mouse_pos, PARTICLE_RADIUS, PARTICLE_MASS, [random.randrange(-10, 10), random.randrange(-10, 10)]))
+                #* centered the spawn of the particle when mouse is clicked
+                particles.add(Particle((mouse_pos[0]-PARTICLE_RADIUS, mouse_pos[1]-PARTICLE_RADIUS), PARTICLE_RADIUS, PARTICLE_MASS, [random.randrange(-10, 10), random.randrange(-10, 10)]))
 
 
         #* function for all the key presses (also updates the screen)
