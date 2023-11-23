@@ -3,8 +3,11 @@ import pygame
 import sys
 import random
 from objects.particles import Particle
-from objects.other_objects import Platform
+from objects.object import Platform
 from objects.collision import collision
+from densityCalc import calculateDensity, smoothingCurve
+
+
 # initialize pygame
 pygame.init()
 
@@ -24,7 +27,7 @@ particles = pygame.sprite.Group()
 
 # create standard properties for particles
 PARTICLE_MASS = 1
-PARTICLE_RADIUS = 10
+PARTICLE_RADIUS = 8
 
 
 # Create objects on surface with a boundary of width and height
@@ -52,6 +55,8 @@ def gameUpdate(surface):
     #* Finally drawing objects onto screen
     particles.draw(WIN)
     other_objects.draw(WIN)
+    Density = calculateDensity(WIN, particles, WIN_CENTER, 80)
+    print(Density)
 
     # Update pygame display
     pygame.display.update()
@@ -68,7 +73,7 @@ def reset(surface):
 
 
 
-def generate_group_particles(surface, num_x=10, num_y=10, vel=['random'], pos=(WIN_CENTER[0]-150, WIN_CENTER[1]-150)):
+def generate_group_particles(surface, num_x=10, num_y=10, spacing=30, vel=['random'], pos=(WIN_CENTER[0]-150, WIN_CENTER[1]-150)):
     """
     :param surface: Game surface to create particles on
     :param num_x: the number of particles on each row
@@ -79,11 +84,11 @@ def generate_group_particles(surface, num_x=10, num_y=10, vel=['random'], pos=(W
     if vel[0] == "random":
         for rows in range(num_y):
             for column in range(num_x):
-                particles.add(Particle((pos[0] + column*30, pos[1]+rows*30), PARTICLE_RADIUS, PARTICLE_MASS, [random.randrange(-10, 10), random.randrange(-10, 10)]))
+                particles.add(Particle((pos[0] + column*spacing, pos[1]+rows*spacing), PARTICLE_RADIUS, PARTICLE_MASS, [random.randrange(-10, 10), random.randrange(-10, 10)]))
     else:
         for rows in range(num_y):
             for column in range(num_x):
-                particles.add(Particle((pos[0] + column * 30, pos[1] + rows * 30), PARTICLE_RADIUS, PARTICLE_MASS, vel))
+                particles.add(Particle((pos[0] + column * spacing, pos[1] + rows * spacing), PARTICLE_RADIUS, PARTICLE_MASS, vel))
 
 
 def getKeyPresses(surface):
@@ -98,6 +103,9 @@ def getKeyPresses(surface):
 
     if keys[pygame.K_g]:
         generate_group_particles(surface) #* generates particles
+
+    if keys[pygame.K_l]: # test key
+        pass
 
     if not keys[pygame.K_s]:  # * freezes frame when key s is being pressed
         gameUpdate(surface)
@@ -117,7 +125,7 @@ def main():
     highest_fps = 0
     lowest_fps = 60
 
-    generate_group_particles(WIN)
+    generate_group_particles(WIN, num_x=15, num_y=15, spacing=40,vel=[0, 0])
 
     #* Main game loop
     while run:
