@@ -17,6 +17,7 @@ class Particle(pygame.sprite.Sprite):
         self.image = pygame.Surface([radius*2, radius*2],  pygame.SRCALPHA) #* I made it so that the surface is transpratent
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = position
+        self.center = [self.rect.x + self.radius, self.rect.y + self.radius]
         pygame.draw.circle(self.image, self._color, (self.radius, self.radius), self.radius)
 
     def colorCoding(self):
@@ -43,6 +44,7 @@ class Particle(pygame.sprite.Sprite):
 
         self.rect.x += self._velocity[0]
         self.rect.y += self._velocity[1]
+        self.center = [self.rect.x + self.radius, self.rect.y + self.radius]
         #self._color = self.colorCoding()
 
 
