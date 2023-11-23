@@ -22,7 +22,6 @@ class Platform(pygame.sprite.Sprite):
 
     def update(self):
         self.velocity[1] += self.gravity
-        # if you dont mind, I deleted this, since the condition in setter prevents the velocity from changing
         self.rect.x += self._velocity[0]
         self.rect.y += self._velocity[1]
 
