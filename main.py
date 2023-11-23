@@ -23,7 +23,7 @@ other_objects = pygame.sprite.Group()
 particles = pygame.sprite.Group()
 
 # create standard properties for particles
-PARTICLE_MASS = 2
+PARTICLE_MASS = 1
 PARTICLE_RADIUS = 10
 
 
