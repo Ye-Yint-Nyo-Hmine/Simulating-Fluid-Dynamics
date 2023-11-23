@@ -1,7 +1,6 @@
 import pygame
 
-
-def updates(particles, non_gravity_objects):
+def collision(particles, non_gravity_objects):
     positions = {}
     for particle in particles:
         positions[particle] = [particle.rect.x, particle.rect.y]
@@ -13,7 +12,7 @@ def updates(particles, non_gravity_objects):
     non_gravity_objects.update()
 
     # constant variable for Collision Damping
-    COLLISION_DAMPING_CONSTANT = 0.5
+    COLLISION_DAMPING_CONSTANT = 0.65
 
     #* Collision detection between particles and non_gravity_objects
     collisions = pygame.sprite.groupcollide(particles, non_gravity_objects, False, False)
