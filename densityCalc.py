@@ -15,7 +15,7 @@ def calculateDensity(WIN, particles, sample_point, smoothing_radius=5):
 
     for particle in particles:
         distance = math.sqrt((particle.center[0]-sample_point[0])**2 + (particle.center[1]-sample_point[1])**2)
-        influence = smoothingCurve(smoothing_radius, distance)/10**12
+        influence = smoothingCurve(smoothing_radius, distance)/10**9
         density += (particle.mass * influence)
 
     return round(density, 4)
