@@ -29,6 +29,9 @@ particles = pygame.sprite.Group()
 PARTICLE_MASS = 1
 PARTICLE_RADIUS = 8
 
+# create standard physics properties
+SMOOTHING_RADIUS = 30
+
 
 # Create objects on surface with a boundary of width and height
 other_objects.add(Platform([0, HEIGHT-10], [WIDTH, 10], invincible=True))
@@ -55,8 +58,9 @@ def gameUpdate(surface):
     #* Finally drawing objects onto screen
     particles.draw(WIN)
     other_objects.draw(WIN)
-    Density = calculateDensity(WIN, particles, WIN_CENTER, 80)
-    print(Density)
+
+    for particle in particles:
+        calculateDensity(WIN, particles, particle.center, SMOOTHING_RADIUS)
 
     # Update pygame display
     pygame.display.update()
@@ -104,8 +108,11 @@ def getKeyPresses(surface):
     if keys[pygame.K_g]:
         generate_group_particles(surface) #* generates particles
 
-    if keys[pygame.K_l]: # test key
-        pass
+    if keys[pygame.K_d]: # get density of the mouse position
+        mouse_pos = pygame.mouse.get_pos()
+        mouse_density = calculateDensity(WIN, particles, mouse_pos, SMOOTHING_RADIUS)
+        print(mouse_density)
+
 
     if not keys[pygame.K_s]:  # * freezes frame when key s is being pressed
         gameUpdate(surface)
@@ -125,7 +132,7 @@ def main():
     highest_fps = 0
     lowest_fps = 60
 
-    generate_group_particles(WIN, num_x=15, num_y=15, spacing=40,vel=[0, 0])
+    generate_group_particles(WIN, num_x=10, num_y=10, spacing=30)
 
     #* Main game loop
     while run:
