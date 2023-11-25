@@ -15,7 +15,8 @@ def calculateDensity(WIN, particles, sample_point, smoothing_radius=5):
 
     for particle in particles:
         distance = math.sqrt((particle.center[0]-sample_point[0])**2 + (particle.center[1]-sample_point[1])**2)
-        influence = smoothingCurve(smoothing_radius, distance)/10**9
+        #* 10**8.86271  is a constant I found out after many trials and error which make the center of the particle max density exactly 1.0000
+        influence = smoothingCurve(smoothing_radius, distance)/10**8.86271
         density += (particle.mass * influence)
 
     return round(density, 4)
