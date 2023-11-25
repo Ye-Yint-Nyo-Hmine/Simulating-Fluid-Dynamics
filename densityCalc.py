@@ -10,6 +10,9 @@ def smoothingCurve(radius, distance):
 
 def calculateDensity(WIN, particles, sample_point, smoothing_radius=5):
     density = 0
+    # TODO: Make this function run faster
+    # TODO: Redo the calculation to make it correct; as it is not currently
+    # TODO: make the following density visual semi transparent
     pygame.draw.circle(WIN, (0, 255, 255),
                        (sample_point), smoothing_radius, width=smoothing_radius-8)
 
