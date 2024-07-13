@@ -9,6 +9,12 @@
 >The primary goal of the program is to provide a user-friendly and efficient platform for simulating fluid flow,
 >understanding complex fluid dynamics phenomena, and optimizing designs.
 
+## Contributors
+Filip Dvorak: <a href="https://github.com/DvorakFilip" target="_blank"> Filip's github</a> 
+<br/>
+Ye Yint Hmine: <a href="mailto:yeyintnyohmine143@gmail.com" target="_blank"> yeyintnyohmine143@gmail.com</a> 
+<!--- add license in the future time --->
+
 ## Table of Contents
 - [Overview](#overview)
 - [Supports](#supports)
@@ -50,11 +56,5 @@ cd Simulating-Fluid-Dynamics
 pip install pygame
 ```
 
-## Contributors
-Ye Yint Hmine: <a href="mailto:yeyintnyohmine143@gmail.com" target="_blank"> yeyintnyohmine143@gmail.com</a> 
-<br/>
-Filip Dvorak: <a href="https://github.com/FilipDv" target="_blank"> Filip's github</a> 
-
-<!--- add license in the future time --->
 
 
