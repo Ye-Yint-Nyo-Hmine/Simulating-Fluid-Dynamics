@@ -36,9 +36,9 @@ Ye Yint Hmine: <a href="mailto:yeyintnyohmine143@gmail.com" target="_blank"> yey
 - [x] Create particle and platform objects
 - [x] Apply Physics to all objects and collision
 - [ ] Create an algorithm to make the particles simulate like fluid
-- [ ] Add gravity
+- [x] Add gravity
 - [ ] Revamp back the FPS to run smooth
-- [ ] Create objects to test on
+- [x] Create objects to test on
 - [ ] Adjust code and fix bugs
 - [ ] Acheive in creating a simulation of fluid in pygame with realistic physics and research, while making it customizable
 - [ ] Refine it to make it realistic and run smooth
