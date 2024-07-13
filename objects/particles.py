@@ -45,7 +45,8 @@ class Particle(pygame.sprite.Sprite):
         self.rect.x += self._velocity[0]
         self.rect.y += self._velocity[1]
         self.center = [self.rect.x + self.radius, self.rect.y + self.radius]
-        #self._color = self.colorCoding()
+        self._color = self.colorCoding()
+        pygame.draw.circle(self.image, self._color, (self.radius, self.radius), self.radius)
 
 
     @property

@@ -13,8 +13,9 @@ def calculateDensity(WIN, particles, sample_point, smoothing_radius=5):
     # TODO: Make this function run faster
     # TODO: Redo the calculation to make it correct; as it is not currently
     # TODO: make the following density visual semi transparent
-    pygame.draw.circle(WIN, (0, 255, 255),
-                       (sample_point), smoothing_radius, width=smoothing_radius-8)
+    #* The code line below is commented out temporarily for github uploads only
+    """pygame.draw.circle(WIN, (0, 255, 255),
+                       (sample_point), smoothing_radius, width=smoothing_radius-8)"""
 
     for particle in particles:
         distance = math.sqrt((particle.center[0]-sample_point[0])**2 + (particle.center[1]-sample_point[1])**2)

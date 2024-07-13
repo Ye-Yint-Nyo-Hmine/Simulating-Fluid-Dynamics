@@ -59,9 +59,9 @@ def gameUpdate(surface):
     particles.draw(WIN)
     other_objects.draw(WIN)
 
-    for particle in particles:
+    """for particle in particles:
         calculateDensity(WIN, particles, particle.center, SMOOTHING_RADIUS)
-
+"""
     # Update pygame display
     pygame.display.update()
 
